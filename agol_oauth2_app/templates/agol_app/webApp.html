@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    {% load staticfiles %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9" />
+    <title>
+    </title>
+    <link rel="stylesheet" type="text/css" href="//serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/dojo/dijit/themes/tundra/tundra.css">
+    <link rel="stylesheet" type="text/css" href="//serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/esri/css/esri.css" />
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'agol_app/css/layout.css' %}"/>
+
+    <script type="text/javascript">
+        var dojoConfig = {
+            parseOnLoad: true,
+            packages:[
+                {name:"esriTemplate", location:"{% static 'agol_app' %}"},
+                {name:"app", location:"{% static 'agol_app/javascript' %}"},
+                {name:"agsjs", location:"{% static 'agol_app/agsjs' %}"}
+            ]
+        };
+    </script>
+    <script type="text/javascript" src="//serverapi.arcgisonline.com/jsapi/arcgis/3.4/">
+    </script>
+    <script type="text/javascript" src="{% static 'agol_app/javascript/layout.js' %}">
+    </script>
+    <script type="text/javascript">
+
+        dojo.requireLocalization("esriTemplate","template");
+        dojo.require('app.OAuthHelper');
+        dojo.require('esri.map');
+        dojo.require('dojo.fx');
+        dojo.require('agsjs.dijit.TOC');
+
+        var configOptions;
+
+        function init(){
+
+            configOptions = {
+                //The ID for the map from ArcGIS.com
+                webmap : "{{ default_map }}",
+                //Enter the configurable application id
+                appid: '',
+                //Enter a theme for the template. Valid values are (chrome, seaside, pavement)
+                theme:'chrome',
+                //Enter a title, if no title is specified, the webmap's title is used.
+                title : "",
+                //Enter a subtitle, if not specified the ArcGIS.com web map's summary is used
+                subtitle : "<a href='{% url 'accounts_logout' %}'>logout</a>",
+                //If the webmap uses Bing Maps data, you will need to provided your Bing Maps Key
+                bingmapskey : "",
+                //specify a proxy url if needed
+                proxyurl:"",
+                //specify the url to a geometry service
+                geometryserviceurl:"http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer",
+                //Modify this to point to your sharing service URL if you are using the portal
+                sharingurl :"http://www.arcgis.com/sharing/rest/content/items",
+                owner:"Example"
+            };
+
+            //Setup Security
+            OAuthHelper.init({
+                appId: "{{ app_id }}",
+                portal: "{{ portal_url }}",
+                expiration: (14 * 24 * 60),
+                popup: false
+            });
+            if (OAuthHelper.isSignedIn()) {
+                console.log("Already signed in.")
+                initMap();
+            }
+            else {
+                console.log("Signing in.")
+                OAuthHelper.registerToken({
+                    username:"{{ username }}",
+                    access_token:"{{ access_token }}",
+                    expires_at: {{ expires_at }},
+                    ssl: false
+                });
+                OAuthHelper.SkipPopup();
+                initMap();
+            }
+
+        }
+
+        dojo.addOnLoad(init);
+    </script>
+</head>
+
+<body class="tundra">
+<div id="mainWindow" dojotype="dijit.layout.BorderContainer" design="headline"
+     gutters="false" style="width:100%; height:100%;">
+
+    <!-- Header Section-->
+    <div id="header" dojotype="dijit.layout.ContentPane" region="top">
+        <div id="title">
+            <a href='{% url 'accounts_logout' %}'>logout</a>
+        </div>
+        <div id="subtitle">
+        </div>
+        <div id="header_flourish"></div>
+
+    </div>
+
+    <!--Sidebar Section-->
+    <div dojotype="dijit.layout.ContentPane" id="leftPane" region="left">
+        <div id="leftPaneContent" dojotype="dijit.layout.BorderContainer" design="headline"
+             gutters="false" style="width:100%; height:100%;">
+            <!--Sidebar Header-->
+            <div id="leftPaneHeader" dojotype="dijit.layout.ContentPane" region="top">
+                <span id='legendHeader'></span>
+            </div>
+            <!--Sidebar Content-->
+            <div id="leftPaneBody" dojotype="dijit.layout.StackContainer" region="center">
+                <div id="panel1" class="panel_content" dojotype="dijit.layout.ContentPane">
+                    <div id="legendDiv">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Section -->
+    <div id="map" dojotype="dijit.layout.ContentPane" region="center" dir="ltr">
+    </div>
+
+    <!-- Footer Section-->
+    <div id="footer" dojotype="dijit.layout.ContentPane" region="bottom">
+        <span id='footerText'></span>
+          <span id="owner">
+          </span>
+    </div>
+
+</div>
+</body>
+
+</html>

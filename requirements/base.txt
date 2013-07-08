@@ -1,0 +1,9 @@
+Django==1.5.1
+distribute==0.6.35
+Unipath==0.2.1
+django-braces==1.0.0
+requests==1.2.0
+simplejson==3.1.2
+djangorestframework==2.2.5
+django-crispy-forms==1.2.4
+django-windows-tools==0.1.1

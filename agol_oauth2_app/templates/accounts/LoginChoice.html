@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock %}
+
+{% block navigation %}
+    {{ block.super }}
+{% endblock %}
+
+{% block container %}
+    <div class="container">
+    <div class="hero-unit">
+        <h2>Login to access AGOL OAuth 2 App Example</h2>
+        <p>You can login with an Example account, or an ArcGIS Online account:</p>
+        <div class="row">
+            <div class="span2"><a href="{% url 'accounts_login_local' %}{% if next %}?next={{ next }}{% endif %}"><div class="btn btn-primary">Example Account</div></a></div>
+            <div class="span1">&nbsp;</div>
+            <div class="span2"><a href="{{ agoloauth2 }}"><div class="btn btn-primary">ArcGIS Online</div></a></div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block javascripteop %}
+    {{ block.super }}
+{% endblock %}
+
+
+

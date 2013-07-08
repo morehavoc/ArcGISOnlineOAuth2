@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="utf-8">
+    <title>{% block pagetitle %}AGOL OAuth 2 App Example{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AGOL OAuth 2 App Example">
+    <meta name="author" content="Christopher Moravec">
+    <!-- Shim to make HTML5 elements usable in older Internet Explorer versions -->
+    <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+    {% block stylesheets %}
+    <!-- Le styles -->
+
+    <link href="{% static "bootstrap/css/bootstrap.css" %}" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        }
+    </style>
+    <link href="{% static "bootstrap/css/bootstrap-responsive.css" %}" rel="stylesheet">
+
+    {% endblock %}
+
+</head>
+
+<body>
+{% block navigation %}
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="#">AGOL OAuth 2 App Example</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'accounts_logout' %}">Logout</a></li>
+                    {% endif %}
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+    {% if messages %}
+
+            {% for message in messages %}
+                <div class="alert">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+    {% endif %}
+{% endblock %}
+{% block container %}
+<div class="container">
+</div> <!-- /container -->
+{% endblock %}
+{% block javascripteop %}
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="{% static "bootstrap/js/bootstrap.js" %}"></script>
+{% endblock %}
+
+</body>
+</html>
