@@ -21,6 +21,7 @@ AGOL_OAUTH2_SECRET = ""
 AGOL_OAUTH2_REDIRECT_URI = ""
 AGOL_START_MAP = ""
 ```
+3. Create a "database" folder in the agol_oauth2_app folder so that syncdb can create the database for you.
 
 3. Use the Django syncdb command to create the appropriate databae tables and a new user.
 
